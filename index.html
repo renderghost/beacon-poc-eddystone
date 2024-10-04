@@ -1,0 +1,48 @@
+ *<!doctype html>
+<html>
+  <head>
+    <title>Eddystone-URL Beacon</title>
+  </head>
+  <body>
+    <h1>Eddystone-URL Beacon</h1>
+    <p>
+      This app will broadcast the specified URL as an Eddystone-URL advertisement packet using Bluetooth.
+    </p>
+    <form>
+      <label for="url">URL:</label><br>
+      <input type="text" id="url" value="https://www.example.com"><br>
+      <button type="button" onclick="startBroadcast()">Start Broadcast</button>
+      <button type="button" onclick="stopBroadcast()">Stop Broadcast</button>
+    </form> 
+    <p id="status"></p>
+
+    <script>
+      // This function will start the broadcast of the Eddystone-URL advertisement packet
+      function startBroadcast() {
+        // Get the URL from the form
+        var url = document.getElementById('url').value;
+        
+        // Start the broadcast using the Web Bluetooth API
+        navigator.bluetooth.requestLEScan({filters: [{services: ['feaa']}]}).then(() => {
+          console.log('Broadcasting Eddystone-URL: ' + url);
+          document.getElementById('status').innerHTML = 'Broadcasting Eddystone-URL: ' + url;
+        }).catch((error) => {
+          console.log('Error starting broadcast: ' + error);
+          document.getElementById('status').innerHTML = 'Error starting broadcast: ' + error;
+        });
+      }
+      
+      // This function will stop the broadcast of the Eddystone-URL advertisement packet
+      function stopBroadcast() {
+        // Stop the broadcast using the Web Bluetooth API
+        navigator.bluetooth.stopLEScan().then(() => {
+          console.log('Stopped broadcast');
+          document.getElementById('status').innerHTML = 'Stopped broadcast';
+        }).catch((error) => {
+          console.log('Error stopping broadcast: ' + error);
+          document.getElementById('status').innerHTML = 'Error stopping broadcast: ' + error;
+        });
+      }
+    </script>
+  </body>
+</html>
